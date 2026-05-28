@@ -31,9 +31,8 @@ pipeline {
             steps {
                 sh '''
                     echo "[+] Compiling source files..."
-                    cd Test2
                     find src -name "*.java" > sources.txt
-                    javac -encoding UTF-8 -d ../${CLASS_DIR} -cp ../${JUNIT_JAR_PATH} @sources.txt
+                    javac -encoding UTF-8 -d ${CLASS_DIR} -cp ${JUNIT_JAR_PATH} @sources.txt
                 '''
             }
         }
@@ -48,27 +47,4 @@ pipeline {
                          --details=tree \
                          --details-theme=ascii \
                          --reports-dir ${REPORT_DIR} \
-                         --config=junit.platform.output.capture.stdout=true \
-                         --config=junit.platform.reporting.open.xml.enabled=true \
-                         > ${REPORT_DIR}/test-output.txt
-                '''
-            }
-        }
-    }
-
-    post {
-        always {
-            echo "[*] Archiving test results..."
-            junit "${REPORT_DIR}/**/*.xml"
-            archiveArtifacts artifacts: "${REPORT_DIR}/**/*", allowEmptyArchive: true
-        }
-
-        failure {
-            echo "Build or test failed!"
-        }
-
-        success {
-            echo "Build and test succeeded!"
-        }
-    }
-}
+                         --config=juni
