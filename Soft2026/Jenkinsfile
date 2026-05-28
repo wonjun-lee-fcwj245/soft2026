@@ -6,6 +6,7 @@ pipeline {
         JUNIT_JAR_PATH = 'lib/junit.jar'
         CLASS_DIR = 'classes'
         REPORT_DIR = 'test-reports'
+        APP_DIR = 'Soft2026'
     }
 
     stages {
@@ -18,6 +19,7 @@ pipeline {
         stage('Prepare') {
             steps {
                 sh '''
+                    cd ${APP_DIR}
                     mkdir -p ${CLASS_DIR}
                     mkdir -p ${REPORT_DIR}
                     mkdir -p lib
@@ -30,6 +32,7 @@ pipeline {
         stage('Build') {
             steps {
                 sh '''
+                    cd ${APP_DIR}
                     echo "[+] Compiling source files..."
                     find src -name "*.java" > sources.txt
                     javac -encoding UTF-8 -d ${CLASS_DIR} -cp ${JUNIT_JAR_PATH} @sources.txt
@@ -39,7 +42,7 @@ pipeline {
 
         stage('Test') {
             steps {
-                sh 'echo "[+] Running tests with JUnit..." && java -jar ${JUNIT_JAR_PATH} --class-path ${CLASS_DIR} --scan-class-path --details=tree --details-theme=ascii --reports-dir ${REPORT_DIR} --config=junit.platform.output.capture.stdout=true --config=junit.platform.reporting.open.xml.enabled=true > ${REPORT_DIR}/test-output.txt'
+                sh 'cd ${APP_DIR} && echo "[+] Running tests with JUnit..." && java -jar ${JUNIT_JAR_PATH} --class-path ${CLASS_DIR} --scan-class-path --details=tree --details-theme=ascii --reports-dir ${REPORT_DIR} --config=junit.platform.output.capture.stdout=true --config=junit.platform.reporting.open.xml.enabled=true > ${REPORT_DIR}/test-output.txt'
             }
         }
     }
@@ -47,8 +50,8 @@ pipeline {
     post {
         always {
             echo "[*] Archiving test results..."
-            junit allowEmptyResults: true, testResults: "${REPORT_DIR}/**/*.xml"
-            archiveArtifacts artifacts: "${REPORT_DIR}/**/*", allowEmptyArchive: true
+            junit allowEmptyResults: true, testResults: "${APP_DIR}/${REPORT_DIR}/**/*.xml"
+            archiveArtifacts artifacts: "${APP_DIR}/${REPORT_DIR}/**/*", allowEmptyArchive: true
         }
         failure {
             echo "Build or test failed!"
