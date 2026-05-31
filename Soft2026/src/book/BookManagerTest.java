@@ -2,6 +2,8 @@ package book;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.Set;
+
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -51,5 +53,22 @@ public class BookManagerTest {
         assertThrows(IllegalArgumentException.class, () -> {
             manager.removeBook("Unknown Book");
         });
+    }
+    
+    @Test
+    @Order(5)
+    void testGetBookCount() {
+        assertEquals(2, manager.getBookCount());
+    }
+    
+    @Test
+    @Order(6)
+    void testGetAllBooks() {
+        manager.addBook("Refactoring");
+        Set<String> all = manager.getAllBooks();
+        assertTrue(all.contains("Clean Code"));
+        assertTrue(all.contains("Java Basics"));
+        assertTrue(all.contains("Refactoring"));
+        assertEquals(3, all.size());
     }
 }
