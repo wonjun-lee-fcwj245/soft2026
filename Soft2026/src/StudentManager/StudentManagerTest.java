@@ -1,8 +1,8 @@
 package StudentManager;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
+
+import java.util.Set;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.MethodOrderer;
@@ -54,4 +54,23 @@ public class StudentManagerTest {
             manager.removeStudent("유령학생");
         });
     }
+    
+    @Test
+    @Order(5)
+    void testGetStudentCount() {
+        assertEquals(2, manager.getStudentCount());
+    }
+    
+    @Test
+    @Order(6)
+    void testGetAllStudents() {
+        manager.addStudent("이영희");
+        Set<String> all = manager.getAllStudents();
+        assertTrue(all.contains("김철수"));
+        assertTrue(all.contains("홍길동"));
+        assertTrue(all.contains("이영희"));
+        assertEquals(3, all.size());
+    }
+    
+    
 }
