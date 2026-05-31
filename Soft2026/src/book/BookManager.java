@@ -26,4 +26,14 @@ public class BookManager {
     public boolean hasBook(String title) {
         return books.contains(title);
     }
+    
+    // 책 수 반환
+    public int getBookCount() {
+        return books.size();
+    }
+    
+    // 전체 책 목록 반환
+    public Set<String> getAllBooks() {
+        return new HashSet<>(books);
+    }
 }
