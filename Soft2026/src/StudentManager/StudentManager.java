@@ -20,7 +20,7 @@ public class StudentManager {
         students.remove(name);
     }
     
-    // 학생 존재 여부 확인
+    // 학생 존재 여부 확인 (boolean값 반환)
     public boolean hasStudent(String name) {
         return students.contains(name);
     }
