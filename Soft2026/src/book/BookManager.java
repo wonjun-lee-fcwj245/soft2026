@@ -22,7 +22,7 @@ public class BookManager {
         books.remove(title);
     }
 
-    // 책 조회
+    // 책 조회 (boolean값 반환)
     public boolean hasBook(String title) {
         return books.contains(title);
     }
